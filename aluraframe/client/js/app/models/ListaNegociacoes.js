@@ -13,4 +13,10 @@ class ListaNegociacoes {
         return  [].concat(this._negociacoes); 
     }
 
+    constructor(armadilha) {
+
+        this._negociacoes = [];
+        this._armadilha = armadilha;
+    }
+
 }

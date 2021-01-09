@@ -1,25 +1,28 @@
 class NegociacaoController {
     
     constructor() {
-         let $ = document.querySelector.bind(document);
-         this._inputData = $('#data');
-         this._inputQuantidade = $('#quantidade');
-         this._inputValor= $('#valor');
-         this._listaNegociacoes = new ListaNegociacoes();
+        let $ = document.querySelector.bind(document);
+        this._inputData = $('#data');
+        this._inputQuantidade = $('#quantidade');
+        this._inputValor= $('#valor');
+        this._listaNegociacoes = new ListaNegociacoes(function() {
 
-         this._negociacoesView = new NegociacoesView($('#negociacoesView'));
-         this._negociacoesView.update(this._listaNegociacoes);
+            this._negociacoesView.update(this._listaNegociacoes);
+        });
 
-         this._mensagem = new Mensagem();
-         this._mensagemView = new MensagemView($('#mensagemView'));
-         this._mensagemView.update(this._mensagem);
+        this._negociacoesView = new NegociacoesView($('#negociacoesView'));
+        this._negociacoesView.update(this._listaNegociacoes);
+
+        this._mensagem = new Mensagem();
+        this._mensagemView = new MensagemView($('#mensagemView'));
+        this._mensagemView.update(this._mensagem);
     }
     
     
     adiciona () {
         event.preventDefault();
         this._listaNegociacoes.adiciona(this._criaNegociacao());
-        this._negociacoesView.update(this._listaNegociacoes);
+        // this._negociacoesView.update(this._listaNegociacoes);
 
         this._mensagem.texto = 'Negociaçao adicionada com sucesso';
         this._mensagemView.update(this._mensagem);
@@ -27,6 +30,16 @@ class NegociacaoController {
         this._limpaFormulario()
 
     }
+
+    apaga() {
+
+        this._listaNegociacoes.esvazia();
+        // this._negociacoesView.update(this._listaNegociacoes);
+    
+        this._mensagem.texto = "Negociações removidas com sucesso";
+        this._mensagemView.update(this._mensagem);
+    }
+
 
     _criaNegociacao() {
         return new Negociacao(
