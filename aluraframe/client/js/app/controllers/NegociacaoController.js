@@ -17,12 +17,11 @@ class NegociacaoController {
             'texto');
     }
 
-
     adiciona() {
         event.preventDefault();
         this._listaNegociacoes.adiciona(this._criaNegociacao());
         this._mensagem.texto = 'Negociaçao adicionada com sucesso';
-        this._limpaFormulario()
+        this._limpaFormulario();
     }
 
     apaga() {
@@ -31,14 +30,12 @@ class NegociacaoController {
         
     }
 
-
     _criaNegociacao() {
         return new Negociacao(
             DateHelper.textoParaData(this._inputData.value),
             this._inputQuantidade.value,
             this._inputValor.value);
     }
-
 
     _limpaFormulario() {
         this._inputData.value = '';
