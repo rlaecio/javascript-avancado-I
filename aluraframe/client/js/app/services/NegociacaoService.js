@@ -1,25 +1,22 @@
 class NegociacaoService {
+
+    constructor() {
+        this.http = new HttpService();      
+    }
+
     
     obterNegociacoesDaSemana() {
 
         return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', 'negociacoes/semana');
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState == 4) {
-                    if(xhr.status == 200) {
-                        
-                    resolve(JSON.parse(xhr.responseText)
-                        .map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor)));
-                        
-                    } else {
-                        console.log(xhr.responseText);
-                        reject('Não foi possível obter as negociações da semana'); 
-                    }
-                }
-            };
-            xhr.send();
-
+             this.http
+                .get('negociacoes/semana')
+                .then(negociacoes => {
+                    resolve(negociacoes.map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor)));
+                })
+                .catch(erro => {
+                    console.log(erro);
+                    reject('Não foi possível obter as negociações da semana');
+                })
         });
     }
 
@@ -37,7 +34,7 @@ class NegociacaoService {
                         
                     } else {
                         console.log(xhr.responseText);
-                        reject('Não foi possível obter as negociações da semana'); 
+                        reject('Não foi possível obter as negociações da semana anterior'); 
                     }
                 }
             };
@@ -60,7 +57,7 @@ class NegociacaoService {
                         
                     } else {
                         console.log(xhr.responseText);
-                        reject('Não foi possível obter as negociações da semana'); 
+                        reject('Não foi possível obter as negociações da semana retrasada'); 
                     }
                 }
             };
