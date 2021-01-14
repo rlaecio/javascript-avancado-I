@@ -44,4 +44,24 @@ class NegociacaoService {
                 throw new Error('Não foi possível obter as negociações da semana anterior');
             });
     }
+
+    obterNegociacoes() {
+
+        return new Promise((resolve, reject) => {
+
+            Promise.all([
+                this.obterNegociacoesDaSemana(),
+                this.obterNegociacoesDaSemanaAnterior(),
+                this.obterNegociacoesDaSemanaRetrasada()
+            ]).then(periodos => {
+
+                let negociacoes = periodos
+                    .reduce((dados, periodo) => dados.concat(periodo), [])
+                    .map(dado => new Negociacao(new Date(dado.data), dado.quantidade, dado.valor ));
+
+                resolve(negociacoes);
+
+            }).catch(erro => reject(erro));
+        });
+    }    
 }
