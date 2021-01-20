@@ -19,17 +19,7 @@ class NegociacaoController {
             
         this._ordemAtual = ''  
 
-        ConnectionFactory
-            .getConnection()
-            .then(connection => new NegociacaoDao(connection))
-            .then(dao => dao.listaTodos())
-            .then(negociacoes => 
-                negociacoes.forEach(negociacao => 
-                    this._listaNegociacoes.adiciona(negociacao)))
-            .catch(erro => {
-                console.log(erro);
-                this._mensagem.texto = erro;
-            })
+        this._init();
     }
     
     adiciona(event) {
@@ -85,6 +75,24 @@ class NegociacaoController {
             parseInt(this._inputQuantidade.value),
             parseFloat(this._inputValor.value));    
     }
+
+    _init(){
+        ConnectionFactory
+            .getConnection()
+            .then(connection => new NegociacaoDao(connection))
+            .then(dao => dao.listaTodos())
+            .then(negociacoes => 
+                negociacoes.forEach(negociacao => 
+                    this._listaNegociacoes.adiciona(negociacao)))
+            .catch(erro => {
+                console.log(erro);
+                this._mensagem.texto = erro;
+            })
+
+        setInterval(() => {
+            this.importaNegociacoes()
+        }, 3000);
+    }
     
     _limpaFormulario() {
      
@@ -103,4 +111,6 @@ class NegociacaoController {
         }
         this._ordemAtual = coluna;    
     }
+
+
 }
