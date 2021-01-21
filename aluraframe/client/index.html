@@ -20,11 +20,9 @@
 <body class="container">
 
     <h1 class="text-center">Negociações</h1>
-
     <div id="mensagemView"></div>
 
     <form class="form" onsubmit="negociacaoController.adiciona(event)">
-
         <div class="form-group">
             <label for="data">Data</label>
             <input type="text" placeholder="dd/mm/aaaa" id="data" class="form-control" required autofocus />
@@ -72,9 +70,8 @@
     <script src="js/app/dao/NegociacaoDao.js"></script>
     
     <script>
-        var negociacaoController = new NegociacaoController();
+         var negociacaoController = new NegociacaoController();
     </script>
-
 </body>
 
 </html>

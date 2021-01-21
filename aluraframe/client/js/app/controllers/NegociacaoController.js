@@ -1,9 +1,7 @@
 class NegociacaoController {
     
-    constructor() {
-        
+    constructor() {    
         let $ = document.querySelector.bind(document);
-        
         this._inputData = $('#data');
         this._inputQuantidade = $('#quantidade');
         this._inputValor = $('#valor');
@@ -57,8 +55,7 @@ class NegociacaoController {
             .catch(erro => this._mensagem.texto = erro);
     }
     
-    _criaNegociacao() {
-        
+    _criaNegociacao() {    
         return new Negociacao(
             DateHelper.textoParaData(this._inputData.value),
             parseInt(this._inputQuantidade.value),
@@ -66,7 +63,6 @@ class NegociacaoController {
     }
 
     _init() {
-
         this._service
             .lista()
             .then(negociacoes =>
@@ -74,22 +70,19 @@ class NegociacaoController {
                     this._listaNegociacoes.adiciona(negociacao)))
             .catch(erro => this._mensagem.texto = erro);
     
-    
             setInterval(() => {
                 this.importaNegociacoes();
             }, 3000);
     }
     
     _limpaFormulario() {
-     
         this._inputData.value = '';
         this._inputQuantidade.value = 1;
         this._inputValor.value = 0.0;
         this._inputData.focus();   
     }
     
-    ordena(coluna) {
-        
+    ordena(coluna) {    
         if(this._ordemAtual == coluna) {
             this._listaNegociacoes.inverteOrdem(); 
         } else {

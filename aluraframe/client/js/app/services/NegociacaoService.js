@@ -1,12 +1,10 @@
 class NegociacaoService {
     
-    constructor() {
-        
+    constructor() {    
         this._http = new HttpService();
     }
     
-    obterNegociacoesDaSemana() {
-               
+    obterNegociacoesDaSemana() {         
         return this._http
             .get('negociacoes/semana')
             .then(negociacoes => {
@@ -19,8 +17,7 @@ class NegociacaoService {
             });  
     }
     
-    obterNegociacoesDaSemanaAnterior() {
-               
+    obterNegociacoesDaSemanaAnterior() {          
         return this._http
             .get('negociacoes/anterior')
             .then(negociacoes => {
@@ -33,8 +30,7 @@ class NegociacaoService {
             });   
     }
     
-    obterNegociacoesDaSemanaRetrasada() {
-               
+    obterNegociacoesDaSemanaRetrasada() {          
         return this._http
             .get('negociacoes/retrasada')
             .then(negociacoes => {
@@ -48,8 +44,7 @@ class NegociacaoService {
         
     }
     
-    obterNegociacoes() {
-        
+    obterNegociacoes() {  
         return Promise.all([
             this.obterNegociacoesDaSemana(),
             this.obterNegociacoesDaSemanaAnterior(),
@@ -79,7 +74,6 @@ class NegociacaoService {
     }
 
     lista() {
-
         return ConnectionFactory
                 .getConnection()
                 .then(connection => new NegociacaoDao(connection))
