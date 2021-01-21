@@ -1,10 +1,17 @@
-class NegociacaoService {
+import {HttpService} from './HttpService';
+import {ConnectionFactory} from './ConnectionFactory';
+import {NegociacaoDao} from '../dao/NegociacaoDao';
+import {Negociacao} from '../models/Negociacao';
+
+export class NegociacaoService {
     
-    constructor() {    
+    constructor() {
+        
         this._http = new HttpService();
     }
     
-    obterNegociacoesDaSemana() {         
+    obterNegociacoesDaSemana() {
+               
         return this._http
             .get('negociacoes/semana')
             .then(negociacoes => {
@@ -17,7 +24,8 @@ class NegociacaoService {
             });  
     }
     
-    obterNegociacoesDaSemanaAnterior() {          
+    obterNegociacoesDaSemanaAnterior() {
+               
         return this._http
             .get('negociacoes/anterior')
             .then(negociacoes => {
@@ -30,7 +38,8 @@ class NegociacaoService {
             });   
     }
     
-    obterNegociacoesDaSemanaRetrasada() {          
+    obterNegociacoesDaSemanaRetrasada() {
+               
         return this._http
             .get('negociacoes/retrasada')
             .then(negociacoes => {
@@ -44,7 +53,8 @@ class NegociacaoService {
         
     }
     
-    obterNegociacoes() {  
+    obterNegociacoes() {
+        
         return Promise.all([
             this.obterNegociacoesDaSemana(),
             this.obterNegociacoesDaSemanaAnterior(),
@@ -59,9 +69,10 @@ class NegociacaoService {
         }).catch(erro => {
             throw new Error(erro);
         });
-    } 
-    
+	} 
+
     cadastra(negociacao) {
+
         return ConnectionFactory
             .getConnection()
             .then(connection => new NegociacaoDao(connection))
@@ -69,11 +80,12 @@ class NegociacaoService {
             .then(() => 'Negociação adicionada com sucesso')
             .catch(erro => {
                 console.log(erro);
-                throw new Error('Não foi possivel adicionar a negociação')
+                throw new Error('Não foi possível adicionar a negociação')
             });
     }
 
     lista() {
+
         return ConnectionFactory
                 .getConnection()
                 .then(connection => new NegociacaoDao(connection))
@@ -81,31 +93,34 @@ class NegociacaoService {
                 .catch(erro => {
                     console.log(erro);
                     throw new Error('Não foi possível obter as negociações')
-                  })
-      }
+                })
+    }
 
     apaga() {
+
         return ConnectionFactory
             .getConnection()
             .then(connection => new NegociacaoDao(connection))
             .then(dao => dao.apagaTodos())
             .then(() => 'Negociações apagadas com sucesso')
             .catch(erro => {
-                  console.log(erro);
-                  throw new Error('Não foi possível apagar as negociações')
-            });
+                console.log(erro);
+                throw new Error('Não foi possível apagar as negociações')
+            })
+
     }
 
     importa(listaAtual) {
+
         return this.obterNegociacoes()
-        .then(negociacoes =>
-            negociacoes.filter(negociacao => 
-                !listaAtual.some(negociacaoExistente => 
-                    JSON.stringify(negociacao) == JSON.stringify(negociacaoExistente)))
-        )
-        .catch(erro => {
-            console.log(erro);
-            throw new Error('Não foi possivel buscar negociações para importar')
-        })   
+            .then(negociacoes => 
+                negociacoes.filter(negociacao => 
+                    !listaAtual.some(negociacaoExistente => 
+                        JSON.stringify(negociacao) == JSON.stringify(negociacaoExistente)))
+            )
+            .catch(erro => {
+                console.log(erro);
+                throw new Error('Não foi possível buscar negociações para importar');
+            })
     }
 }
